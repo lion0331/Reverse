@@ -1,42 +1,10 @@
-﻿// SkillDialog.cpp: 实现文件
+﻿// SearchMemory.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
-
-#include "pch.h"
-#include "Torchlight2.h"
-#include "SkillDialog.h"
-#include "afxdialogex.h"
-#include "afxdialogex.h"
 #include <Windows.h>
 #include <vector>
 #include <Time.h>
+#include <iostream>
 
-
-// SkillDialog 对话框
-
-IMPLEMENT_DYNAMIC(SkillDialog, CDialogEx)
-
-SkillDialog::SkillDialog(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_Two, pParent)
-{
-
-}
-
-SkillDialog::~SkillDialog()
-{
-}
-
-void SkillDialog::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-}
-
-
-BEGIN_MESSAGE_MAP(SkillDialog, CDialogEx)
-	ON_BN_CLICKED(IDC_BUTTON1, &SkillDialog::OnBnClickedButton1)
-END_MESSAGE_MAP()
-
-
-// SkillDialog 消息处理程序
 int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWORD64 StartAddress, DWORD64 EndAddress, std::vector<DWORD64>& ResultArray)
 {
 	MEMORY_BASIC_INFORMATION MemoryInformation;
@@ -80,34 +48,14 @@ int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWOR
 }
 
 
-void SkillDialog::OnBnClickedButton1()
+int main()
 {
-	// TODO: 在此添加控件通知处理程序代码
-	//ULONG_PTR _Stat = (ULONG_PTR)GetModuleHandleA("Torchlight2.exe");
-	//_Stat = (ULONG_PTR)(_Stat + 0x00184170);
-
-	//ULONG_PTR _ECX = (ULONG_PTR)GetModuleHandleA("Torchlight2.exe");
-	//_ECX = *(ULONG_PTR*)(_ECX + 0x024E95F4);
-	//_ECX = *(ULONG_PTR*)(_ECX + 0x2C);
-
-	//ULONG_PTR ECX_ = (ULONG_PTR)GetModuleHandleA("Torchlight2.exe");
-	//ECX_ = *(ULONG_PTR*)(ECX_ + 0x0337EFC8);
-	//ECX_ = *(ULONG_PTR*)(ECX_ + 0x9C);
-	//ECX_ = *(ULONG_PTR*)(ECX_ + 0x40);
-	//ECX_ = (ULONG_PTR)(ECX_ + 0xD8C);
-
-	//__asm {
-	//	push _ECX
-	//	mov ecx, ECX_
-	//	mov eax, _Stat
-	//	call eax
-	//}
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, 6952);
 	WORD FeatureCode[4] = { 0x63,0x84,0x7F,0x53 };
 	std::vector<DWORD64>ResultArray;
 	float Start = clock();
-	SearchMemory(this, FeatureCode, 4, 0x41000, 0x7FFFFFFFF, ResultArray);
+	SearchMemory(hProcess, FeatureCode, 4, 0x41000, 0x7FFFFFFFF, ResultArray);
 	float End = clock();
-	CString str[1024];
 	for (int i = 0; i < ResultArray.size(); i++)
 	{
 
@@ -116,3 +64,4 @@ void SkillDialog::OnBnClickedButton1()
 	}
 	printf("搜索到%d个内存地址,用时%f毫秒", ResultArray.size(), End - Start);
 }
+
