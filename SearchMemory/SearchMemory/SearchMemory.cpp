@@ -5,7 +5,7 @@
 #include <Time.h>
 #include <iostream>
 
-int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWORD64 StartAddress, DWORD64 EndAddress, std::vector<DWORD64>& ResultArray)
+int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, ULONG_PTR StartAddress, ULONG_PTR EndAddress, std::vector<ULONG_PTR>& ResultArray)
 {
 	MEMORY_BASIC_INFORMATION MemoryInformation;
 	FeatureCodeSize -= 1;
@@ -20,9 +20,9 @@ int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWOR
 				return 0;
 			}
 			MemoryInformation.RegionSize -= FeatureCodeSize;
-			for (int v = 0; v < MemoryInformation.RegionSize; v++)
+			for (ULONG_PTR v = 0; v < MemoryInformation.RegionSize; v++)
 			{
-				for (int i = 0; i <= FeatureCodeSize; i++)
+				for (ULONG_PTR i = 0; i <= FeatureCodeSize; i++)
 				{
 					if (MemoryData[v + i] != FeatureCode[i] && FeatureCode[i] <= 255)
 					{
@@ -30,7 +30,7 @@ int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWOR
 					}
 					if (i == FeatureCodeSize)
 					{
-						ResultArray.push_back((DWORD64)MemoryInformation.BaseAddress + v);
+						ResultArray.push_back((ULONG_PTR)MemoryInformation.BaseAddress + v);
 						i += FeatureCodeSize + 1;
 					}
 
@@ -38,7 +38,7 @@ int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWOR
 			}
 			delete[] MemoryData;
 		}
-		StartAddress = (DWORD64)MemoryInformation.BaseAddress + MemoryInformation.RegionSize + FeatureCodeSize;
+		StartAddress = (ULONG_PTR)MemoryInformation.BaseAddress + MemoryInformation.RegionSize + FeatureCodeSize;
 		if (StartAddress >= EndAddress)
 		{
 			return ResultArray.size();
@@ -50,16 +50,16 @@ int SearchMemory(HANDLE hProcess, WORD FeatureCode[], BYTE FeatureCodeSize, DWOR
 
 int main()
 {
-	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, 6952);
-	WORD FeatureCode[4] = { 0x63,0x84,0x7F,0x53 };
-	std::vector<DWORD64>ResultArray;
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, 4788);
+	WORD FeatureCode[5] = { 0x70 ,0x43 ,0xF0 ,0x00, 0x00 };
+	std::vector< ULONG_PTR >ResultArray;
 	float Start = clock();
-	SearchMemory(hProcess, FeatureCode, 4, 0x41000, 0x7FFFFFFFF, ResultArray);
+	SearchMemory(hProcess, FeatureCode, 5, 0x41000, 0x7fffffffffff, ResultArray);
 	float End = clock();
-	for (int i = 0; i < ResultArray.size(); i++)
+	for (ULONG_PTR i = 0; i < ResultArray.size(); i++)
 	{
 
-		printf("%X\n", ResultArray[i]);
+		printf("%p\n", ResultArray[i]);
 
 	}
 	printf("搜索到%d个内存地址,用时%f毫秒", ResultArray.size(), End - Start);

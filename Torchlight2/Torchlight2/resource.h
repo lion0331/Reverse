@@ -6,7 +6,6 @@
 #define IDC_TAB1                        1000
 #define IDC_BUTTON1                     1001
 #define IDC_CHECK1                      1002
-#define IDC_BUTTON2                     1003
 #define IDD_Two                         1004
 #define IDC_EDIT1                       1004
 #define IDC_EDIT2                       1005
