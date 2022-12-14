@@ -7,13 +7,14 @@
 #include "HomeWorldRM.h"
 #include "HomeWorldRMDlg.h"
 #include "afxdialogex.h"
+#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 //#include "F:\\WorkFiles\\Source\\Reverse\\HomeWorldRM\\HomeWorldRMDll\\HomeWorld.h"
 
-
+using std::string;
 
 // CHomeWorldRMDlg 对话框
 
@@ -94,6 +95,7 @@ void CHomeWorldRMDlg::MonitoringThreadProc()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	//CDialogEx::OnOK();
+	//string     szName;
 	TCHAR     szName[MAX_PATH] = { 0 };
 	CString m_StrDLLPath = _T("");
 	GetCurrentDirectory(MAX_PATH, szName); //获取当前进程已加载模块的文件的完整路径，该模块必须由当前进程加载
