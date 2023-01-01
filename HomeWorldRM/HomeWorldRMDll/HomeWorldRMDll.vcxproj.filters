@@ -21,7 +21,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="HomeWorld.cpp">
+    <ClCompile Include="CWndMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,7 +49,7 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HomeWorld.h">
+    <ClInclude Include="CWndMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

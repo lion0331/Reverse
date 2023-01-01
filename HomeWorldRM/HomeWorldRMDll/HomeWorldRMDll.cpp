@@ -52,13 +52,58 @@ CHomeWorldRMDllApp::CHomeWorldRMDllApp()
 // 唯一的 CHomeWorldRMDllApp 对象
 
 CHomeWorldRMDllApp theApp;
-
+CHomeWorldRMDllApp* PtheApp;
+//DWORD WINAPI ShowDialog(LPARAM lpData)
+//{
+//	PMainDialog = new CWndMain;//给指针分配空间 
+//	PMainDialog->DoModal();//阻塞的方式 模态窗口
+//	delete PMainDialog;//释放空间
+//	FreeLibraryAndExitThread(theApp.m_hInstance, 1);//释放DLL退出线程
+//	return TRUE;
+//}
 
 // CHomeWorldRMDllApp 初始化
 
 BOOL CHomeWorldRMDllApp::InitInstance()
 {
 	CWinApp::InitInstance();
-	GodMode();
+	//::CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)ShowDialog, NULL, NULL, NULL);//创建线程
+	PtheApp = this;
 	return TRUE;
+}
+
+HHOOK keyHook = 0;
+LRESULT CALLBACK KeyboardProc(
+	_In_ int code,
+	_In_ WPARAM wParam,
+	_In_ LPARAM lParam
+)
+{
+	if (code == HC_ACTION) {
+		if ((lParam & (1 << 31)) == 0)
+		{
+			if (wParam == VK_HOME) {
+				if (!PtheApp->PMainDialog)
+				{
+					PtheApp->PMainDialog = new CWndMain;//给指针分配空间 
+					PtheApp->PMainDialog->Create(IDD_MAIN);//阻塞的方式 模态窗口
+				}
+
+				AfxMessageBox(L"按下了HOME键");
+				PtheApp->PMainDialog->ChangeShowState();
+			}
+		}
+
+	}
+	return CallNextHookEx(keyHook, code, wParam, lParam);
+}
+
+struct DllInfo
+{
+	HOOKPROC keyProc;
+};
+
+void DllInit(DllInfo* dllInfo)
+{
+	dllInfo->keyProc = KeyboardProc;
 }

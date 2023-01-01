@@ -32,5 +32,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	void MonitoringThreadProc();
-	afx_msg void OnBnClickedCheck1();
+	
+	afx_msg void OnBnClickedButton1();
 };

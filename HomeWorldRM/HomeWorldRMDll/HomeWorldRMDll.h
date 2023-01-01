@@ -8,7 +8,7 @@
 #endif
 
 #include "resource.h"		// 主符号
-#include "HomeWorld.h"
+#include "CWndMain.h"
 
 // CHomeWorldRMDllApp
 // 有关此类实现的信息，请参阅 HomeWorldRMDll.cpp
@@ -22,6 +22,6 @@ public:
 // 重写
 public:
 	virtual BOOL InitInstance();
-
+	CWndMain* PMainDialog{};//窗口类
 	DECLARE_MESSAGE_MAP()
 };
