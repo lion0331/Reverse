@@ -34,4 +34,5 @@ public:
 	void MonitoringThreadProc();
 	
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
 };

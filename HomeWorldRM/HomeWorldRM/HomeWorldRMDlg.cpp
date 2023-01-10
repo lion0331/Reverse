@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CHomeWorldRMDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()	
 	ON_BN_CLICKED(IDC_BUTTON1, &CHomeWorldRMDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CHomeWorldRMDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -250,7 +251,7 @@ struct DllInfo
 {
 	HOOKPROC keyProc;
 };
-HOOKPROC KeyProc;
+HHOOK keyHook;
 typedef void (*fDllInit)(DllInfo* dllInfo);
 void CHomeWorldRMDlg::OnBnClickedButton1()
 {
@@ -265,7 +266,7 @@ void CHomeWorldRMDlg::OnBnClickedButton1()
 
 	HWND hwnd = FindWindowA("hwRM", "Homeworld Remastered");
 	if (hwnd == NULL) {
-		MessageBox(L"没有找到");
+		MessageBox(L"没有找到游戏窗口");
 		return;
 	}
 	// 获取窗口所在的PID
@@ -281,7 +282,7 @@ void CHomeWorldRMDlg::OnBnClickedButton1()
 
 	if (HomeWorldRM)
 	{
-		HHOOK keyHook = SetWindowsHookExA(WH_KEYBOARD, dll.keyProc, HomeWorldRM, tID);
+		keyHook = SetWindowsHookExA(WH_KEYBOARD, dll.keyProc, HomeWorldRM, tID);
 		MessageBox(L"注入成功");
 	}
 	else
@@ -289,4 +290,11 @@ void CHomeWorldRMDlg::OnBnClickedButton1()
 		MessageBox(L"注入失败");
 	}
 
+}
+
+
+void CHomeWorldRMDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UnhookWindowsHookEx(keyHook);
 }

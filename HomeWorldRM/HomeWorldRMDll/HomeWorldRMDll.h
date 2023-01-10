@@ -18,7 +18,7 @@ class CHomeWorldRMDllApp : public CWinApp
 {
 public:
 	CHomeWorldRMDllApp();
-
+	~CHomeWorldRMDllApp();
 // 重写
 public:
 	virtual BOOL InitInstance();

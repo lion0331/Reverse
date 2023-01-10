@@ -2,7 +2,6 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 HomeWorldRMDll.rc 使用
 //
-#define IDD_DIALOG1                     1000
 #define IDD_MAIN                        1000
 
 // Next default values for new objects
